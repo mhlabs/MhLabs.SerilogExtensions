@@ -1,9 +1,0 @@
-c:\code\mhlabs\MhLabs.SerilogExtensions\bin\Debug\netstandard2.0\MhLabs.SerilogExtensions.deps.json
-c:\code\mhlabs\MhLabs.SerilogExtensions\bin\Debug\netstandard2.0\MhLabs.SerilogExtensions.dll
-c:\code\mhlabs\MhLabs.SerilogExtensions\bin\Debug\netstandard2.0\MhLabs.SerilogExtensions.pdb
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.csprojAssemblyReference.cache
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.csproj.CoreCompileInputs.cache
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.AssemblyInfoInputs.cache
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.AssemblyInfo.cs
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.dll
-c:\code\mhlabs\MhLabs.SerilogExtensions\obj\Debug\netstandard2.0\MhLabs.SerilogExtensions.pdb
