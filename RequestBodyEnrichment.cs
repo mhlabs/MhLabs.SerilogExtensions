@@ -9,8 +9,11 @@ namespace MhLabs.SerilogExtensions
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             var value = LogValueResolver.Resolve(this);
-            var property = new LogEventProperty("RequestBody", new ScalarValue(value));
-            logEvent.AddOrUpdateProperty(property);
+            if (!string.IsNullOrWhiteSpace(value)) 
+            {
+                var property = new LogEventProperty("RequestBody", new ScalarValue(value));
+                logEvent.AddOrUpdateProperty(property);
+            }
         }
     }
 }
