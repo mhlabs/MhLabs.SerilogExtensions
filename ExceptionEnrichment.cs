@@ -10,7 +10,7 @@ namespace MhLabs.SerilogExtensions
             if (logEvent.Exception == null) return;
             
             var type = new LogEventProperty("ExceptionType", new ScalarValue(logEvent.Exception.GetType().Name));
-            var value = new LogEventProperty("Exception", new ScalarValue(logEvent.Exception.ToString()));
+            var value = propertyFactory.CreateProperty("EscapedException", logEvent.Exception.ToString().Replace("\r\n", "\\r\\n"));
             logEvent.AddOrUpdateProperty(type);
             logEvent.AddOrUpdateProperty(value);
         }
