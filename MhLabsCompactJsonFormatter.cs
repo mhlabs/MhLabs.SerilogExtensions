@@ -54,6 +54,7 @@ namespace MhLabs.SerilogExtensions
             AppendTimestamp(logEvent, output);
             AppendMessageTemplate(logEvent, output);
             AppendMessage(logEvent, output);
+            AppendException(logEvent, output);
             AppendRenderings(logEvent, output);
             AppendLevel(logEvent, output);
 
@@ -137,6 +138,15 @@ namespace MhLabs.SerilogExtensions
                 JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.Message, output);
             }
             
+        }
+
+        private static void AppendException(LogEvent logEvent, TextWriter output)
+        {
+            if (logEvent.Exception != null)
+            {
+                output.Write(",\"Exception\":");
+                JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.ToString(), output);
+            }
         }
 
         private static void AppendMessageTemplate(LogEvent logEvent, TextWriter output)
