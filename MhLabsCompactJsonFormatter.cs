@@ -112,8 +112,9 @@ namespace MhLabs.SerilogExtensions
 
         private static void AppendTimestamp(LogEvent logEvent, TextWriter output)
         {
-            output.Write(",\"Timestamp\":");
+            output.Write(",\"Timestamp\":\"");
             output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
+            output.Write("\"");
         }
 
         private static void AppendMessage(LogEvent logEvent, TextWriter output)
@@ -122,7 +123,7 @@ namespace MhLabs.SerilogExtensions
                 .OfType<PropertyToken>()
                 .Any(m => m.ToString().IndexOf('@') > -1);
 
-            output.Write("{\"Message\":\"");
+            output.Write("{\"Message\":");
 
             if (logEvent.Exception == null)
             {
@@ -141,7 +142,7 @@ namespace MhLabs.SerilogExtensions
 
         private static void AppendMessageTemplate(LogEvent logEvent, TextWriter output)
         {
-            output.Write("\",\"MessageTemplate\":");
+            output.Write(",\"MessageTemplate\":");
             var messageTemplateText = GetNonRedundantTemplateText(logEvent);
             JsonValueFormatter.WriteQuotedJsonString(messageTemplateText, output);
         }
