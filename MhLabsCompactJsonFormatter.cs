@@ -51,9 +51,9 @@ namespace MhLabs.SerilogExtensions
             if (output == null) throw new ArgumentNullException(nameof(output));
             if (valueFormatter == null) throw new ArgumentNullException(nameof(valueFormatter));
 
-            AppendTimestamp(logEvent, output);
-            AppendMessageTemplate(logEvent, output);
             AppendMessage(logEvent, output);
+            AppendMessageTemplate(logEvent, output);
+            AppendTimestamp(logEvent, output);
             AppendRenderings(logEvent, output);
             AppendLevel(logEvent, output);
 
@@ -112,7 +112,7 @@ namespace MhLabs.SerilogExtensions
 
         private static void AppendTimestamp(LogEvent logEvent, TextWriter output)
         {
-            output.Write("{\"Timestamp\":\"");
+            output.Write(",\"Timestamp\":");
             output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
         }
 
@@ -122,7 +122,7 @@ namespace MhLabs.SerilogExtensions
                 .OfType<PropertyToken>()
                 .Any(m => m.ToString().IndexOf('@') > -1);
 
-            output.Write(",\"Message\":");
+            output.Write("{\"Message\":\"");
 
             if (logEvent.Exception == null)
             {
