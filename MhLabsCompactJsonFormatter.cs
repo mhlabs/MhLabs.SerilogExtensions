@@ -127,7 +127,7 @@ namespace MhLabs.SerilogExtensions
             if (logEvent.Exception == null)
             {
                 var message = hasSerializedFields
-                    ? null
+                    ? logEvent.MessageTemplate.ToString()
                     : logEvent.MessageTemplate.Render(logEvent.Properties);
 
                 JsonValueFormatter.WriteQuotedJsonString(message, output);
