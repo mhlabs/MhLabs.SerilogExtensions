@@ -31,5 +31,10 @@ namespace MhLabs.SerilogExtensions
             }
             return null;
         }
+
+        public static void Clear()
+        {
+            _values.Clear();
+        }
     }
 }
