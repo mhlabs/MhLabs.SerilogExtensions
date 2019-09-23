@@ -119,53 +119,16 @@ namespace MhLabs.SerilogExtensions
 
         private static void AppendMessage(LogEvent logEvent, TextWriter output)
         {
-            var hasSerializedFields = logEvent.MessageTemplate.Tokens
-                .OfType<PropertyToken>()
-                .Any(m => m.ToString().IndexOf('@') > -1);
-
             output.Write("{\"Message\":");
 
-            if (logEvent.Exception == null)
-            {
-                var message = hasSerializedFields
-                    ? logEvent.MessageTemplate.ToString()
-                    : logEvent.MessageTemplate.Render(logEvent.Properties);
-
-                JsonValueFormatter.WriteQuotedJsonString(message, output);
-            }
-            else
-            {
-                JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.Message, output);
-            }
-            
+            var message = logEvent.MessageTemplate.Render(logEvent.Properties);
+            JsonValueFormatter.WriteQuotedJsonString(message, output);
         }
 
         private static void AppendMessageTemplate(LogEvent logEvent, TextWriter output)
         {
             output.Write(",\"MessageTemplate\":");
-            var messageTemplateText = GetNonRedundantTemplateText(logEvent);
-            JsonValueFormatter.WriteQuotedJsonString(messageTemplateText, output);
-        }
-
-        /// <summary>
-        /// For exceptions and some errors, Message and MessageTemplate are the same.
-        /// Let's save on the bits and bytes.
-        /// </summary>
-        /// <param name="logEvent"></param>
-        /// <returns></returns>
-        private static string GetNonRedundantTemplateText(LogEvent logEvent)
-        {
-            const string propagated = "Unknown error responding to request:"; // from APIGatewayProxyFunction.cs
-            const string defaultError = "Exception";
-            
-            var templateText = logEvent.MessageTemplate.Text;
-
-            if (logEvent.Exception != null) return defaultError;
-            if (logEvent.Level != LogEventLevel.Error) return templateText;
-
-            return templateText.IndexOf(propagated, StringComparison.Ordinal) > -1 ? 
-                defaultError : 
-                templateText;
+            JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Text, output);
         }
     }
 }
