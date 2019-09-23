@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Serilog.Core;
-using Serilog.Events;
 
 namespace MhLabs.SerilogExtensions
 {
