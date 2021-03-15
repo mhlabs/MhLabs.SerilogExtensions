@@ -7,12 +7,6 @@ namespace MhLabs.SerilogExtensions.Tests.Formatters
 {
     public class MhSensitivePropertyValueFormatterTests
     {
-        private readonly MhSensitivePropertyValueFormatter _formatter;
-        public MhSensitivePropertyValueFormatterTests()
-        {
-            _formatter = new MhSensitivePropertyValueFormatter();
-        }
-
         [Theory]
         [InlineData("password", "abc", "*****")]
         [InlineData("PASSWORD", "abc", "*****")]
@@ -24,9 +18,8 @@ namespace MhLabs.SerilogExtensions.Tests.Formatters
             // arrange
             var scalar = new ScalarValue(value);
             var logEventProperty = new LogEventProperty(name, scalar);
-
             var structureValue = new StructureValue(new List<LogEventProperty> { logEventProperty });
-            
+            var _formatter = new MhSensitivePropertyValueFormatter();
 
             var logEvent = new LogEvent(
                 new System.DateTimeOffset(),
@@ -38,6 +31,38 @@ namespace MhLabs.SerilogExtensions.Tests.Formatters
             // act
             _formatter.Format(logEvent);
            
+            var baseModel = logEvent.Properties["BaseModel"] as StructureValue;
+            var result = baseModel.Properties[0];
+
+            // assert
+            Assert.Equal(name, result.Name);
+            Assert.Equal(new ScalarValue(expected), result.Value);
+        }
+
+
+        [Theory]
+        [InlineData("secret", "abc", "secret", "*****")]
+        [InlineData("SECRET", "abc", "secret", "*****")]
+        [InlineData("password", "abc", "secret", "*****")]
+        public void Test_AdditionalKeywords(string name, string value, string keyWordToAdd, string expected)
+        {
+            // arrange
+            var scalar = new ScalarValue(value);
+            var logEventProperty = new LogEventProperty(name, scalar);
+            var structureValue = new StructureValue(new List<LogEventProperty> { logEventProperty });
+            var _formatter = new MhSensitivePropertyValueFormatter(new List<string> { keyWordToAdd });
+            
+
+            var logEvent = new LogEvent(
+                new System.DateTimeOffset(),
+                LogEventLevel.Information,
+                null,
+                new MessageTemplate("", new List<MessageTemplateToken>()),
+                new List<LogEventProperty> { new LogEventProperty("BaseModel", structureValue) });
+
+            // act
+            _formatter.Format(logEvent);
+
             var baseModel = logEvent.Properties["BaseModel"] as StructureValue;
             var result = baseModel.Properties[0];
 

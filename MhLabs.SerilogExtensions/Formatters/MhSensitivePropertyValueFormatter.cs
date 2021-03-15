@@ -13,29 +13,19 @@ namespace MhLabs.SerilogExtensions
         private readonly List<string> _sensitiveKeyWords = new List<string>
         {
             "password",
-            "email",
-            "emailaddress",
-            "firstname",
-            "lastname",
-            "fullname",
-            "dateofbirth",
-            "phone",
-            "phonenumber",
-            "phonemobile",
-            "mobile",
-            "tel",
-            "telephone",
-            "address",
-            "addressrow1",
-            "addressrow2",
-            "street"
+            "dateofbirth"
         };
 
         /// <summary>
         /// Construct a <see cref="MhSensitivePropertyValueFormatter"/>
         /// </summary>
-        public MhSensitivePropertyValueFormatter() { }
-
+        public MhSensitivePropertyValueFormatter(IEnumerable<string> additionalKeywords = null)
+        {
+            if (additionalKeywords != null && additionalKeywords.Any())
+            {
+                _sensitiveKeyWords.AddRange(additionalKeywords);
+            }
+        }
 
         /// <summary>
         /// Replace sensitive values with *****
