@@ -17,6 +17,7 @@ namespace MhLabs.SerilogExtensions
     public class MhLabsCompactJsonFormatter: ITextFormatter
     {
         readonly JsonValueFormatter _valueFormatter;
+        private readonly MhSensitivePropertyValueFormatter _logEventPropertiesNameFormatter;
 
         /// <summary>
         /// Construct a <see cref="MhLabsCompactJsonFormatter"/>, optionally supplying a formatter for
@@ -26,6 +27,7 @@ namespace MhLabs.SerilogExtensions
         public MhLabsCompactJsonFormatter(JsonValueFormatter valueFormatter = null)
         {
             _valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
+            _logEventPropertiesNameFormatter = new MhSensitivePropertyValueFormatter();
         }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace MhLabs.SerilogExtensions
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
+            _logEventPropertiesNameFormatter.Format(logEvent);
             FormatEvent(logEvent, output, _valueFormatter);
             output.WriteLine();
         }

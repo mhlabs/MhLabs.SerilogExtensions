@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MhLabs.SerilogExtensions\MhLabs.SerilogExtensions.csproj" />
+  </ItemGroup>
+
 </Project>
