@@ -71,5 +71,37 @@ namespace MhLabs.SerilogExtensions.Tests.Formatters
             Assert.Equal(new ScalarValue(expected), result.Value);
         }
 
+
+        [Fact]
+        public void Test_Format_Sequence()
+        {
+            // arrange
+            var name = "Scope";
+            var sequenceValue = "HTTP POST https://apigateway.mhdev.se/member-service/int/v2.0/members";
+
+            var scalar = new SequenceValue(new List<LogEventPropertyValue> { new ScalarValue(sequenceValue) });
+
+            var logEventProperty = new LogEventProperty(name, scalar);
+            var structureValue = new StructureValue(new List<LogEventProperty> { logEventProperty });
+            var _formatter = new MhSensitivePropertyValueFormatter();
+
+            var logEvent = new LogEvent(
+                new System.DateTimeOffset(),
+                LogEventLevel.Information,
+                null,
+                new MessageTemplate("", new List<MessageTemplateToken>()),
+                new List<LogEventProperty> { new LogEventProperty("BaseModel", structureValue) });
+
+            // act
+            _formatter.Format(logEvent);
+
+            var baseModel = logEvent.Properties["BaseModel"] as StructureValue;
+            var result = baseModel.Properties[0];
+
+            // assert
+            Assert.Equal(name, result.Name);
+            Assert.NotNull(result.Value);
+        }
+
     }
 }

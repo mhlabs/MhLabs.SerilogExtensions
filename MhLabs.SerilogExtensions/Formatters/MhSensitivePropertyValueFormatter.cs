@@ -81,7 +81,7 @@ namespace MhLabs.SerilogExtensions
 
         private LogEventProperty VisitSequence(string name, SequenceValue sequence)
         {
-            var elements = sequence.Elements.Select(e => Visit(null, e).Value);
+            var elements = sequence.Elements.Select(e => Visit(name, e).Value);
             return new LogEventProperty(name, new SequenceValue(elements));
         }
 
