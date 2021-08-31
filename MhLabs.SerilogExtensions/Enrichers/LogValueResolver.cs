@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Serilog.Core;
 
@@ -6,7 +7,7 @@ namespace MhLabs.SerilogExtensions
 {
     public static class LogValueResolver
     {
-        public static IDictionary<string, Func<string>> _values = new Dictionary<string, Func<string>>();
+        public static ConcurrentDictionary<string, Func<string>> _values = new ConcurrentDictionary<string, Func<string>>();
         public static void Register<T>(Func<string> value) where T : ILogEventEnricher
         {
             var key = typeof(T).Name;
@@ -16,7 +17,7 @@ namespace MhLabs.SerilogExtensions
             }
             else
             {
-                _values.Add(key, value);
+                _values.TryAdd(key, value);
             }
         }
 
